@@ -71,9 +71,27 @@ CREATE TABLE IF NOT EXISTS alerts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_listing BIGINT NOT NULL,
     alert_date DATE NOT NULL COMMENT 'Date of the performance issue',
+    
+    -- Severity
     severity_score INT NOT NULL COMMENT 'Numeric severity score (0-200)',
     severity_level ENUM('CRITICAL', 'HIGH', 'MEDIUM', 'LOW') NOT NULL COMMENT 'Alert severity category',
+    
+    -- Issue description
     issues TEXT NOT NULL COMMENT 'Detailed description of issues detected',
+    
+    -- Current week metrics (ADDED)
+    latest_appearances INT COMMENT 'Search appearances in alert week',
+    latest_views INT COMMENT 'Listing views in alert week',
+    latest_bookings INT COMMENT 'Bookings in alert week',
+    latest_view_rate DECIMAL(10, 6) COMMENT 'View rate in alert week',
+    latest_conversion_rate DECIMAL(10, 6) COMMENT 'Conversion rate in alert week',
+    
+    -- Historical context (ADDED)
+    avg_appearances DECIMAL(10, 2) COMMENT '4-week historical avg appearances',
+    avg_bookings DECIMAL(10, 2) COMMENT '4-week historical avg bookings',
+    wow_change_pct DECIMAL(10, 2) COMMENT 'Week-over-week change percentage',
+    
+    -- AI recommendations
     recommended_actions TEXT COMMENT 'AI-generated recommended actions',
     
     -- Alert delivery tracking

@@ -142,9 +142,24 @@ class AlertAnalyzer:
         if len(alerts_df) == 0:
             return
         
-        # Prepare for database
-        db_alerts = alerts_df[['id_listing', 'alert_date', 'severity_score', 
-                               'severity_level', 'issues']].copy()
+        # Save ALL important columns
+        db_alerts = alerts_df[[
+            'id_listing', 
+            'alert_date', 
+            'severity_score', 
+            'severity_level', 
+            'issues',
+            # Current week metrics
+            'latest_appearances',
+            'latest_views', 
+            'latest_bookings',
+            'latest_view_rate',
+            'latest_conversion_rate',
+            # Historical context
+            'avg_appearances',
+            'avg_bookings',
+            'wow_change_pct'
+        ]].copy()
         
         # Add metadata
         db_alerts['recommended_actions'] = ''
