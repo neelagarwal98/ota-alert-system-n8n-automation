@@ -1,0 +1,63 @@
+{
+  "name": "Kasa OTA Monitoring",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "40115647-fce5-4301-9ffc-7d6da9766377",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python main.py --file \"data/Kasa_Living_Weekly_Conversion_Report_2025_(external).xlsx\" --send-slack --use-ai"
+      },
+      "id": "9956cb1b-e753-41a7-9d26-61b96a372e44",
+      "name": "Execute Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        440
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d468debe-fa39-47b9-a923-401873898aa3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "027bfc0d65e834ea835f7d4b002842db272596d20dfeef10407f51752482346a"
+  },
+  "id": "pjjofxzoPig92qPz",
+  "tags": []
+}
