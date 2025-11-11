@@ -23,15 +23,41 @@
     },
     {
       "parameters": {
-        "command": "python main.py --file \"data/Kasa_Living_Weekly_Conversion_Report_2025_(external).xlsx\" --send-slack --use-ai"
+        "command": "cd \"/Users/neelagarwal/IDrive Sync/Cloud-Drive/For Cloud/MS DS UoR/Job applications/Kasa/kasa-ota-monitoring\" && source venv/bin/activate && python main.py --file \"data/Kasa_Living_Weekly_Conversion_Report_2025_(external).xlsx\" --send-slack --use-ai"
       },
       "id": "9956cb1b-e753-41a7-9d26-61b96a372e44",
       "name": "Execute Command",
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        1200,
+        1040,
         440
+      ]
+    },
+    {
+      "parameters": {
+        "content": "This node executes main.py with flexible available flags for using AI insights and slack notification built-in the script"
+      },
+      "id": "25e9aca8-8ccb-42db-870c-d45b05a53678",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Schedules to trigger the command for execution of the pipeline through a cron job set to run every Monday at 9 am\n"
+      },
+      "id": "3981e06c-194a-436f-90bc-ff0b23bf446d",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        740,
+        600
       ]
     }
   ],
@@ -49,11 +75,11 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "d468debe-fa39-47b9-a923-401873898aa3",
+  "versionId": "1da41ea4-1846-4d38-96b9-96b8bb2728f3",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "027bfc0d65e834ea835f7d4b002842db272596d20dfeef10407f51752482346a"
