@@ -138,32 +138,73 @@ class AlertAnalyzer:
         return alerts_df
     
     def save_alerts(self, alerts_df):
-        """Save alerts to database"""
+        """Save alerts to database (deduplicated)"""
         if len(alerts_df) == 0:
             return
         
-        # Save ALL important columns
-        db_alerts = alerts_df[[
+        # Get latest week only (for insertion)
+        latest_week = alerts_df['alert_date'].max()
+        latest_alerts = alerts_df[alerts_df['alert_date'] == latest_week].copy()
+        
+        logger.info(f"💾 Checking alerts for week: {latest_week}")
+        
+        # Check which alerts already exist in database
+        try:
+            existing_query = """
+            SELECT id_listing, alert_date
+            FROM alerts
+            WHERE alert_date = :alert_date
+            """
+            existing_alerts = self.db.read_query(existing_query, {'alert_date': latest_week})
+            
+            if len(existing_alerts) > 0:
+                # Filter out existing alerts
+                existing_listings = set(existing_alerts['id_listing'].values)
+                new_alerts = latest_alerts[~latest_alerts['id_listing'].isin(existing_listings)].copy()
+                
+                skipped_count = len(latest_alerts) - len(new_alerts)
+                
+                if skipped_count > 0:
+                    logger.info(f"ℹ️ Skipping {skipped_count} existing alerts for {latest_week}")
+                
+                if len(new_alerts) == 0:
+                    logger.info(f"✅ All alerts for {latest_week} already exist in database")
+                    return
+                
+                latest_alerts = new_alerts
+                logger.info(f"💾 Saving {len(latest_alerts)} new alerts for week: {latest_week}")
+            else:
+                logger.info(f"💾 Saving {len(latest_alerts)} alerts for week: {latest_week}")
+        
+        except Exception as e:
+            # If query fails (e.g., first run, table doesn't exist), proceed with all alerts
+            logger.debug(f"Could not check existing alerts: {e}")
+            logger.info(f"💾 Saving {len(latest_alerts)} alerts for week: {latest_week}")
+        
+        # Prepare data
+        db_alerts = latest_alerts[[
             'id_listing', 
             'alert_date', 
             'severity_score', 
             'severity_level', 
             'issues',
-            # Current week metrics
             'latest_appearances',
             'latest_views', 
             'latest_bookings',
             'latest_view_rate',
             'latest_conversion_rate',
-            # Historical context
             'avg_appearances',
             'avg_bookings',
             'wow_change_pct'
         ]].copy()
         
-        # Add metadata
         db_alerts['recommended_actions'] = ''
         db_alerts['alert_sent_to'] = 'slack'
         
-        self.db.insert_dataframe(db_alerts, 'alerts', if_exists='append')
-        logger.info(f"✅ Saved {len(db_alerts)} alerts to database")
+        try:
+            self.db.insert_dataframe(db_alerts, 'alerts', if_exists='append')
+            logger.info(f"✅ Saved {len(db_alerts)} new alerts to database")
+        except Exception as e:
+            logger.error(f"❌ Error saving alerts: {e}")
+            raise
+        

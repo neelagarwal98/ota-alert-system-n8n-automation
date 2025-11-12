@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS alerts (
     INDEX idx_severity (severity_score DESC),
     INDEX idx_date (alert_date DESC),
     INDEX idx_resolved (resolved, severity_score DESC)
+    UNIQUE KEY unique_listing_date (id_listing, alert_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Generated alerts for listing performance issues';
 
 -- ============================================================================

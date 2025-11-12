@@ -146,3 +146,4 @@ class SlackNotifier:
         
         message = self.format_alert_message(alerts_df, ai_summary)
         return self.send_message(message)
+    
