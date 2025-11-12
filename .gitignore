@@ -1,3 +1,5 @@
 .env
-backup_20251110.sql
+kasa-ota-monitoring/backup_20251110.sql
 data/
+
+.DS_Store
