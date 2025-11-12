@@ -63,7 +63,7 @@ This automation system monitors hundreds of Airbnb listing performance metrics, 
 
 ### System Components
 
-![architecture-flow.jpg](attachment:https://github.com/neelagarwal98/ota-alert-system-n8n-automation/blob/main/architecture-flow.jpg)
+![architecture-flow.jpg](./architecture-flow.jpg)
 
 ### Technology Stack
 
