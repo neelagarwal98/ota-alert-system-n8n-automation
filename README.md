@@ -314,7 +314,7 @@ kasa-ota-monitoring/
 ### Alert Rules
 
 ```python
-# Pseudocode for alert logic
+#  alert logic
 score = 0
 issues = []
 
