@@ -292,9 +292,9 @@ kasa-ota-monitoring/
 │   └── test_slack.py
 │
 ├── docs/                # Documentation
-│   ├── PROJECT_MEMO.md
+│   ├── PROJECT_MEMO.pdf
 │
-└── README.md            # This file
+└── README.md            
 ```
 
 ## Alert Logic
